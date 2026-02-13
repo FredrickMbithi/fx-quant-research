@@ -1,0 +1,19 @@
+# Example configuration file for fx-quant-research
+project:
+  name: fx-quant-research
+  author: Your Name
+
+data:
+  raw_path: data/raw
+  interim_path: data/interim
+  processed_path: data/processed
+  swap_rates_path: data/swap_rates
+
+backtest:
+  start_date: 2020-01-01
+  end_date: 2024-12-31
+  initial_cash: 1000000
+
+logging:
+  level: INFO
+  path: logs/app.log

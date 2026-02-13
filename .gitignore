@@ -1,0 +1,16 @@
+# Ignore data and logs
+data/
+logs/
+state/
+
+# Python
+*.pyc
+__pycache__/
+
+# Environments and editors
+.env
+.vscode/
+.ipynb_checkpoints/
+
+# OS
+.DS_Store

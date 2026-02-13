@@ -1,0 +1,7 @@
+numpy==1.26.0
+pandas==2.2.2
+pytest==7.4.0
+pyyaml==6.0
+black==24.3.0
+flake8==6.1.0
+# Add additional pinned dependencies as needed
