@@ -2,7 +2,7 @@
 
 ## 1. Clone Repository
 
-git clone <repo_url>
+git clone https://github.com/FredrickMbithi/fx-quant-research
 cd fx-quant-research
 
 ## 2. Create Virtual Environment
