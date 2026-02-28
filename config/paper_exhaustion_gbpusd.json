@@ -1,0 +1,50 @@
+{
+  "strategy_name": "Exhaustion_Failure_GBPUSD_Paper",
+  "strategy_version": "1.0",
+  "symbol": "GBPUSD",
+  
+  "_comment_validated": "Multi-pair H1 test: MARGINAL (3245 signals, +4251 pips, 1.31/trade, WR=50.1%, PF=1.23, p<0.001)",
+  "_comment_goal": "Paper trade to optimize exits: improve 1.31 → 2.0+ pips/trade for PASS status",
+
+  "initial_capital": 100000,
+
+  "strategy_params": {
+    "max_bars": 50,
+    "pressure_threshold": 2,
+    "range_expansion_factor": 0.8,
+    "range_lookback": 10,
+    "percentile_high": 0.65,
+    "percentile_low": 0.35,
+    "percentile_window": 10
+  },
+
+  "exit_params": {
+    "stop_loss_pips": 10,
+    "profit_trigger_pips": 4,
+    "trailing_distance_pips": 3,
+    "max_hold_bars": 5
+  },
+
+  "position_sizing_method": "fixed_fraction",
+  "risk_per_trade_pct": 0.01,
+  "max_concurrent_positions": 1,
+  "trading_sessions": ["ALL"],
+
+  "pips_to_points": 10000,
+  "spread_pips": 1.0,
+  "slippage_pips": 1.0,
+  "lookback_bars": 50,
+
+  "save_trades_to_csv": true,
+  "trades_csv_path": "state/paper_trades_gbpusd.csv",
+  "log_level": "INFO",
+  "performance_report_frequency": 50,
+
+  "monitoring": {
+    "halt_on_drawdown_pct": 10,
+    "halt_on_consecutive_losses": 7,
+    "review_after_trades": 100,
+    "min_win_rate_threshold": 0.45,
+    "min_avg_pnl_threshold": 0.5
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "strategy_name": "Exhaustion_Failure_NZDJPY_Paper",
+  "strategy_version": "1.0",
+  "symbol": "NZDJPY",
+  
+  "_comment_validated": "Multi-pair H1 test: PASS (90 signals, +383 pips, 4.25/trade, WR=63.3%, PF=2.34, p=0.0071)",
+  "_comment_risk": "Small sample (90 signals/3 months) - monitor closely for 30 trades before live",
+
+  "initial_capital": 100000,
+
+  "strategy_params": {
+    "max_bars": 50,
+    "pressure_threshold": 2,
+    "range_expansion_factor": 0.8,
+    "range_lookback": 10,
+    "percentile_high": 0.65,
+    "percentile_low": 0.35,
+    "percentile_window": 10
+  },
+
+  "exit_params": {
+    "stop_loss_pips": 10,
+    "profit_trigger_pips": 4,
+    "trailing_distance_pips": 3,
+    "max_hold_bars": 5
+  },
+
+  "position_sizing_method": "fixed_fraction",
+  "risk_per_trade_pct": 0.01,
+  "max_concurrent_positions": 1,
+  "trading_sessions": ["ALL"],
+
+  "pips_to_points": 100,
+  "spread_pips": 0.9,
+  "slippage_pips": 0.9,
+  "lookback_bars": 50,
+
+  "save_trades_to_csv": true,
+  "trades_csv_path": "state/paper_trades_nzdjpy.csv",
+  "log_level": "INFO",
+  "performance_report_frequency": 10,
+
+  "monitoring": {
+    "halt_on_drawdown_pct": 10,
+    "halt_on_consecutive_losses": 5,
+    "review_after_trades": 30,
+    "min_win_rate_threshold": 0.55,
+    "min_avg_pnl_threshold": 3.0
+  }
+}

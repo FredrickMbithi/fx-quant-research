@@ -1,8 +1,8 @@
 # Feature Test Results — EURUSD Daily
 
-**Test Date:** 2025-02-24  
-**Data Period:** 2015-01-01 to 2025-02-13  
-**Sample Size:** ~2,500 bars
+**Test Date:** 2026-03-01  
+**Data Period:** 2016-02-23 to 2026-02-19  
+**Sample Size:** 2,600 bars
 
 ## Summary
 

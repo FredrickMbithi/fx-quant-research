@@ -22,7 +22,7 @@ class FeatureTestResult:
     
     def is_significant(self, threshold: float = 0.05) -> bool:
         """Check if IC is statistically significant."""
-        return abs(self.ic_mean) > threshold and self.ic_tstat > 2.0
+        return abs(self.ic_mean) > threshold and abs(self.ic_tstat) > 2.0
 
 
 def compute_information_coefficient(

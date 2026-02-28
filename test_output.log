@@ -1,0 +1,195 @@
+nohup: ignoring input
+================================================================================
+                    EXHAUSTION + FAILURE PATTERN TEST
+                         Multi-Pair H1 Analysis
+================================================================================
+Test Date: 2026-02-25 20:23:28 UTC
+================================================================================
+
+================================================================================
+LOADING H1 DATA FOR ALL PAIRS
+================================================================================
+✅ GBPUSD   | 65,000 bars | 2015-04-02 to 2026-02-09
+✅ EURUSD   | 2,048 bars | 2025-10-27 to 2026-02-25
+✅ USDJPY   | 2,048 bars | 2025-10-27 to 2026-02-25
+✅ USDCAD   | 2,048 bars | 2025-10-27 to 2026-02-25
+✅ NZDUSD   | 1 bars | 2026-02-25 to 2026-02-25
+✅ USDCHF   | 2,049 bars | 2025-10-27 to 2026-02-25
+✅ NZDJPY   | 2,048 bars | 2025-10-27 to 2026-02-25
+✅ AUDNZD   | 65,000 bars | 2015-04-03 to 2026-02-05
+
+✅ Successfully loaded 8/8 pairs
+
+================================================================================
+DETECTING EXHAUSTION + FAILURE PATTERNS
+================================================================================
+
+GBPUSD:
+  ✅ Found 3245 signals
+     LONG:  1602
+     SHORT: 1643
+
+EURUSD:
+  ✅ Found 86 signals
+     LONG:  50
+     SHORT: 36
+
+USDJPY:
+  ✅ Found 88 signals
+     LONG:  41
+     SHORT: 47
+
+USDCAD:
+  ✅ Found 83 signals
+     LONG:  30
+     SHORT: 53
+
+NZDUSD:
+  ⚠️  No signals found
+
+USDCHF:
+  ✅ Found 89 signals
+     LONG:  39
+     SHORT: 50
+
+NZDJPY:
+  ✅ Found 90 signals
+     LONG:  39
+     SHORT: 51
+
+AUDNZD:
+  ✅ Found 3249 signals
+     LONG:  1596
+     SHORT: 1653
+
+================================================================================
+✅ Pattern detection complete for 7 pairs
+================================================================================
+
+================================================================================
+CALCULATING METRICS WITH TRANSACTION COSTS
+================================================================================
+
+GBPUSD:
+  Signals:       3245
+  Net PnL:       1.31 pips/trade (total: 4251 pips)
+  Win Rate:      50.1%
+  Profit Factor: 1.23
+  p-value:       0.0000
+  Status:        MARGINAL
+
+EURUSD:
+  Signals:       86
+  Net PnL:       1.46 pips/trade (total: 125 pips)
+  Win Rate:      61.6%
+  Profit Factor: 1.41
+  p-value:       0.2463
+  Status:        FAIL
+
+USDJPY:
+  Signals:       88
+  Net PnL:       2.20 pips/trade (total: 194 pips)
+  Win Rate:      62.5%
+  Profit Factor: 1.52
+  p-value:       0.1156
+  Status:        MARGINAL
+
+USDCAD:
+  Signals:       83
+  Net PnL:       -0.57 pips/trade (total: -47 pips)
+  Win Rate:      47.0%
+  Profit Factor: 0.88
+  p-value:       0.6502
+  Status:        FAIL
+
+USDCHF:
+  Signals:       89
+  Net PnL:       1.86 pips/trade (total: 166 pips)
+  Win Rate:      57.3%
+  Profit Factor: 1.55
+  p-value:       0.1224
+  Status:        FAIL
+
+NZDJPY:
+  Signals:       90
+  Net PnL:       4.25 pips/trade (total: 383 pips)
+  Win Rate:      63.3%
+  Profit Factor: 2.34
+  p-value:       0.0071
+  Status:        PASS
+
+AUDNZD:
+  Signals:       3249
+  Net PnL:       -1.51 pips/trade (total: -4909 pips)
+  Win Rate:      45.2%
+  Profit Factor: 0.71
+  p-value:       0.0000
+  Status:        FAIL
+
+================================================================================
+✅ Metrics calculation complete
+================================================================================
+
+✅ Dashboard saved to: dashboards/exhaustion_failure_h1_multipair_20260225_202331.html
+
+====================================================================================================
+                                        FINAL SUMMARY
+====================================================================================================
+
+Pair       |  Signals |    Net PnL |   Win% |     PF |  p-value |  Sig |  Viable |     Status
+----------------------------------------------------------------------------------------------------
+GBPUSD     |     3245 |       4251 |  50.1% |   1.23 |   0.0000 |    ✅ |       ❌ |   MARGINAL
+NZDJPY     |       90 |        383 |  63.3% |   2.34 |   0.0071 |    ✅ |       ✅ |       PASS
+USDJPY     |       88 |        194 |  62.5% |   1.52 |   0.1156 |    ❌ |       ✅ |   MARGINAL
+USDCHF     |       89 |        166 |  57.3% |   1.55 |   0.1224 |    ❌ |       ❌ |       FAIL
+EURUSD     |       86 |        125 |  61.6% |   1.41 |   0.2463 |    ❌ |       ❌ |       FAIL
+USDCAD     |       83 |        -47 |  47.0% |   0.88 |   0.6502 |    ❌ |       ❌ |       FAIL
+AUDNZD     |     3249 |      -4909 |  45.2% |   0.71 |   0.0000 |    ❌ |       ❌ |       FAIL
+
+====================================================================================================
+SUMMARY STATISTICS:
+====================================================================================================
+
+Total pairs tested:        7
+Pairs with PASS status:    1 (14.3%)
+Pairs with MARGINAL:       2 (28.6%)
+Pairs with FAIL status:    4 (57.1%)
+Profitable pairs:          5 (71.4%)
+
+====================================================================================================
+BEST PERFORMING PAIR:
+====================================================================================================
+Pair:          GBPUSD
+Signals:       3245
+Net PnL:       4251 pips total (1.31 pips/trade)
+Win Rate:      50.1%
+Profit Factor: 1.23
+p-value:       0.0000
+Status:        MARGINAL
+
+====================================================================================================
+WORST PERFORMING PAIR:
+====================================================================================================
+Pair:          AUDNZD
+Signals:       3249
+Net PnL:       -4909 pips total (-1.51 pips/trade)
+Win Rate:      45.2%
+Profit Factor: 0.71
+p-value:       0.0000
+Status:        FAIL
+
+====================================================================================================
+FINAL RECOMMENDATION:
+====================================================================================================
+
+❌ REJECT - Do not deploy
+
+Strategy validated on only 1/7 pairs (14%). Likely overfit or random.
+
+Validated pairs (PASS status):
+  • NZDJPY
+
+====================================================================================================
+📊 Dashboard saved to: dashboards/exhaustion_failure_h1_multipair_20260225_202331.html
+====================================================================================================
+

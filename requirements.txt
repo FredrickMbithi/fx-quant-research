@@ -114,3 +114,8 @@ webcolors==25.10.0
 webencodings==0.5.1
 websocket-client==1.9.0
 widgetsnbextension==4.0.15
+
+# Live trading dependencies
+python-dotenv==1.0.0  # Environment variable management
+quickfix==1.15.1  # FIX protocol implementation (try: pip install quickfix-python if this fails)
+simplefix==1.0.16  # Fallback FIX library if quickfix fails on Kali

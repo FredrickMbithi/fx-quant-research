@@ -1,0 +1,37 @@
+{
+  "strategy_name": "MA_Deviation_SlopeFilter_Paper",
+  "strategy_version": "25E",
+
+  "_comment_validated": "Walk-forward validated on GBP/USD H1 2015-2026 (Parts 25A-25E)",
+  "_comment_oos": "OOS: PF=1.95, WR=59.3%, MaxDD=-2111 pips, +19,360 pips NET",
+  "_comment_costs": "Retail_wide 2.5 pip costs assumed",
+
+  "initial_capital": 100000,
+
+  "strategy_params": {
+    "ma_length": 200,
+    "z_threshold": 1.5,
+    "exit_horizon_bars": 20,
+    "slope_lookback": 50,
+    "slope_z_threshold": 0.5,
+    "slope_std_window": 500,
+    "trade_both_directions": true,
+    "max_bars": 600
+  },
+
+  "position_sizing_method": "fixed_fraction",
+  "risk_per_trade_pct": 0.02,
+
+  "max_concurrent_positions": 3,
+  "trading_sessions": ["ALL"],
+
+  "pips_to_points": 10000,
+  "spread_pips": 1.0,
+  "slippage_pips": 1.5,
+
+  "lookback_bars": 600,
+
+  "save_trades_to_csv": true,
+  "log_level": "INFO",
+  "performance_report_frequency": 10
+}

@@ -1,0 +1,84 @@
+{
+  "strategy_name": "H1_MultiPair_3000_Trades",
+  "description": "High-quality exhaustion reversal strategy across 20-36 pairs to achieve ~3,000 profitable trades",
+  
+  "pairs_to_trade": [
+    "EURUSD",
+    "GBPUSD",
+    "USDJPY",
+    "USDCHF",
+    "AUDUSD",
+    "NZDUSD",
+    "USDCAD",
+    "EURGBP",
+    "EURJPY",
+    "GBPJPY",
+    "AUDJPY",
+    "NZDJPY",
+    "EURCHF",
+    "GBPCHF",
+    "EURAUD",
+    "EURNZD",
+    "GBPAUD",
+    "GBPNZD",
+    "AUDNZD",
+    "AUDCAD"
+  ],
+  
+  "exhaustion_params": {
+    "pressure_lookback": 1,
+    "range_percentile": 90,
+    "entry_threshold": 0.30,
+    "exit_horizon": 10,
+    "detect_bullish": false,
+    "detect_bearish": true,
+    "description": "High-quality config: 85 trades/pair, 7.00 pips/trade"
+  },
+  
+  "risk_management": {
+    "max_pairs_open_simultaneously": 10,
+    "position_size_per_pair": 1.0,
+    "max_portfolio_risk": 10.0,
+    "stop_loss_pips": null,
+    "take_profit_pips": null,
+    "description": "Risk 1% per trade, max 10 pairs open, no SL/TP (time-based exit only)"
+  },
+  
+  "execution": {
+    "spread_pips": {
+      "majors": 1.0,
+      "minors": 2.0,
+      "exotics": 3.0
+    },
+    "slippage_pips": 1.5,
+    "description": "Transaction costs: 2.5 pips avg (1.0-3.0 spread + 1.5 slippage)"
+  },
+  
+  "portfolio": {
+    "initial_capital": 100000,
+    "compound_returns": false,
+    "description": "$100k starting capital, fixed position sizing"
+  },
+  
+  "expected_performance": {
+    "total_trades": 3000,
+    "gross_pips": 21011,
+    "transaction_costs": 7500,
+    "net_pips": 13511,
+    "win_rate": 0.506,
+    "profit_factor": 1.41,
+    "trades_per_year": 276,
+    "pips_per_year": 1239,
+    "description": "Based on 85 trades/pair × 36 pairs over 10.9 years"
+  },
+  
+  "notes": [
+    "This config targets 3,000 trades using HIGH-QUALITY parameters (90th percentile, bottom 30% entry)",
+    "Current pairs list has 20 recommended pairs with good data quality and execution",
+    "To reach 3,000 trades: either add 16 more pairs OR trade 2-3 pairs on M15 instead",
+    "Expected: 20 pairs × 85 trades = 1,700 trades (profitable but below 3k target)",
+    "Expected: 36 pairs × 85 trades = 3,060 trades (meets target)",
+    "Quality beats Quantity: 7.00 pips/trade easily overcomes 2.5 pip transaction costs",
+    "Stop Loss / Take Profit are null = time-based exit only (10 hour horizon)"
+  ]
+}

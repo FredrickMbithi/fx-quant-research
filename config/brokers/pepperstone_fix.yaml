@@ -1,0 +1,91 @@
+# Pepperstone cTrader FIX API Configuration
+# Demo Account: 5227001
+
+# Connection Details
+connection:
+  # Sender/Target IDs (shared by both connections)
+  sender_comp_id: demo.pepperstone.5227001 # Format: <environment>.<broker>.<login>
+  target_comp_id: cServer # Case sensitive!
+  username: "5227001" # Numeric trader login
+  password: Nm643PpQ # FIX API password
+
+  # Price Connection (Market Data)
+  price:
+    host: demo-us-eqx-01.p.c-trader.com
+    port_ssl: 5211
+    port_plain: 5201
+
+  # Trade Connection (Order Execution)
+  trade:
+    host: demo-us-eqx-01.p.c-trader.com
+    port_ssl: 5212
+    port_plain: 5202
+
+# FIX Protocol Version
+fix_version: FIX.4.4
+
+# Session Settings
+session:
+  heartbeat_interval: 30 # seconds
+  reconnect_interval: 30 # seconds
+  logon_timeout: 10 # seconds
+  logout_timeout: 5 # seconds
+
+# Market Data Subscriptions
+symbols:
+  - EURUSD
+  - GBPUSD
+  - USDJPY
+  - AUDUSD
+
+# Trading Parameters
+trading:
+  # Paper trading mode (simulator, no real orders)
+  paper_trading: true
+
+  # When false, sends real orders to broker
+  live_trading: false
+
+  # Capital
+  initial_capital: 100000.0 # Starting equity
+
+  # Position sizing (units, not lots)
+  default_position_size: 10000 # 0.1 lot (10,000 units)
+  max_position_size: 100000 # 1.0 lot (100,000 units)
+
+  # Order defaults
+  order_timeout: 30 # seconds
+
+  # Strategy: MA Deviation + Slope Filter (Part 25E validated)
+  strategy: ma_deviation_slope_filter
+  strategy_params:
+    ma_length: 200
+    z_threshold: 1.5
+    exit_horizon_bars: 20
+    slope_lookback: 50
+    slope_z_threshold: 0.5
+    slope_std_window: 500
+    trade_both_directions: true
+
+# Risk Limits (per project_charter.md)
+risk:
+  max_drawdown_pct: 15.0 # Kill switch at 15% drawdown
+  max_position_exposure: 2.0 # Max 2x capital exposure
+  stop_loss_min_pips: 10 # Minimum stop distance
+  max_daily_loss_pct: 5.0 # Max daily loss before halt
+  max_orders_per_day: 50 # Maximum orders per day
+# Execution Settings
+execution:
+  # Slippage model (matches backtest CostModel)
+  slippage_pct: 0.00009 # 0.9 pips for EUR/USD
+  commission_per_unit: 0.0 # Spread-based pricing
+
+  # Simulated fill delay for paper trading (seconds)
+  simulated_fill_delay_min: 0.1
+  simulated_fill_delay_max: 2.0
+
+# Logging
+logging:
+  fix_messages: true # Log all FIX messages
+  trades: true # Log all trades
+  level: INFO
