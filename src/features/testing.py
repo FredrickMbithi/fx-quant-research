@@ -25,6 +25,63 @@ class FeatureTestResult:
         return abs(self.ic_mean) > threshold and abs(self.ic_tstat) > 2.0
 
 
+def diagnose_overlapping_bias(
+    feature: pd.Series,
+    forward_returns: pd.Series,
+    window: int = 252
+) -> dict:
+    """
+    Compare t-stat from overlapping vs non-overlapping windows.
+    
+    This diagnostic shows how much overlapping windows inflate t-statistics.
+    
+    Returns:
+        dict with:
+            - overlapping_tstat: WRONG t-stat (inflated)
+            - non_overlapping_tstat: CORRECT t-stat
+            - n_overlapping: number of overlapping samples (misleading)
+            - n_independent: number of independent samples (correct)
+            - inflation_factor: how much the overlap inflated the t-stat
+    """
+    # Overlapping IC (WRONG for t-stat)
+    overlap_ics = rolling_ic(feature, forward_returns, window)
+    overlap_mean = overlap_ics.mean()
+    overlap_std = overlap_ics.std()
+    n_overlap = len(overlap_ics.dropna())
+    
+    if overlap_std > 0:
+        overlap_tstat = overlap_mean / (overlap_std / np.sqrt(n_overlap))
+    else:
+        overlap_tstat = 0.0
+    
+    # Non-overlapping IC (CORRECT for t-stat)
+    non_overlap_ics = non_overlapping_ic(feature, forward_returns, window)
+    non_overlap_mean = non_overlap_ics.mean()
+    non_overlap_std = non_overlap_ics.std()
+    n_independent = len(non_overlap_ics.dropna())
+    
+    if non_overlap_std > 0 and n_independent > 1:
+        non_overlap_tstat = non_overlap_mean / (non_overlap_std / np.sqrt(n_independent))
+    else:
+        non_overlap_tstat = 0.0
+    
+    # Calculate inflation factor
+    if non_overlap_tstat != 0:
+        inflation = abs(overlap_tstat) / abs(non_overlap_tstat)
+    else:
+        inflation = np.nan
+    
+    return {
+        'overlapping_tstat': overlap_tstat,
+        'non_overlapping_tstat': non_overlap_tstat,
+        'n_overlapping': n_overlap,
+        'n_independent': n_independent,
+        'inflation_factor': inflation,
+        'ic_mean_overlap': overlap_mean,
+        'ic_mean_non_overlap': non_overlap_mean
+    }
+
+
 def compute_information_coefficient(
     feature: pd.Series, 
     forward_returns: pd.Series,
@@ -64,6 +121,9 @@ def rolling_ic(
     Compute rolling Information Coefficient.
     
     Purpose: Check if feature predictive power is stable over time.
+    
+    WARNING: These are overlapping windows. Do NOT use len(rolling_ic) 
+    as N for t-stat calculation - windows are not independent.
     """
     def calc_ic(feat_window, ret_window):
         if len(feat_window) < 20:
@@ -74,6 +134,48 @@ def rolling_ic(
         calc_ic(feature.iloc[i:i+window], forward_returns.iloc[i:i+window])
         for i in range(len(feature) - window + 1)
     ], index=feature.index[window-1:])
+
+
+def non_overlapping_ic(
+    feature: pd.Series,
+    forward_returns: pd.Series,
+    window: int = 252
+) -> pd.Series:
+    """
+    Compute IC on non-overlapping windows for proper statistical inference.
+    
+    Purpose: Get independent samples for valid t-stat calculation.
+    
+    Returns:
+        Series of IC values from non-overlapping periods.
+        Length will be approximately N_total / window.
+    """
+    def calc_ic(feat_window, ret_window):
+        if len(feat_window) < 20:
+            return np.nan
+        return compute_information_coefficient(feat_window, ret_window)
+    
+    n_windows = len(feature) // window
+    
+    if n_windows < 2:
+        # Not enough data for even 2 windows
+        return pd.Series([compute_information_coefficient(feature, forward_returns)])
+    
+    ics = []
+    window_centers = []
+    
+    for i in range(n_windows):
+        start_idx = i * window
+        end_idx = min((i + 1) * window, len(feature))
+        
+        feat_window = feature.iloc[start_idx:end_idx]
+        ret_window = forward_returns.iloc[start_idx:end_idx]
+        
+        ic = calc_ic(feat_window, ret_window)
+        ics.append(ic)
+        window_centers.append(feature.index[start_idx + window // 2])
+    
+    return pd.Series(ics, index=window_centers)
 
 
 def compute_hit_rate(
@@ -172,23 +274,30 @@ def test_feature(
     
     Returns:
         FeatureTestResult with all metrics
+        
+    IMPORTANT: T-stat is computed using NON-OVERLAPPING IC samples to avoid
+    inflating statistical significance from autocorrelated rolling windows.
     """
     from statsmodels.tsa.stattools import adfuller
     
     # Forward returns (1-day ahead)
     forward_ret = prices.pct_change().shift(-1)
     
-    # IC metrics
-    ic = compute_information_coefficient(feature, forward_ret)
-    rolling_ics = rolling_ic(feature, forward_ret, window=252)
-    ic_mean = rolling_ics.mean()
-    ic_std = rolling_ics.std()
+    # IC metrics - use NON-OVERLAPPING windows for proper t-stat
+    # This gives independent samples for valid statistical inference
+    non_overlap_ics = non_overlapping_ic(feature, forward_ret, window=252)
+    ic_mean = non_overlap_ics.mean()
+    ic_std = non_overlap_ics.std()
     
-    # Handle case where ic_std is 0 or NaN
-    if pd.isna(ic_std) or ic_std == 0:
+    # Proper t-stat using independent samples
+    n_independent = len(non_overlap_ics.dropna())
+    
+    if pd.isna(ic_std) or ic_std == 0 or n_independent < 2:
         ic_tstat = 0.0
     else:
-        ic_tstat = ic_mean / (ic_std / np.sqrt(len(rolling_ics.dropna())))
+        # Standard t-stat: mean / standard_error
+        # where standard_error = std / sqrt(N)
+        ic_tstat = ic_mean / (ic_std / np.sqrt(n_independent))
     
     # Hit rate
     hit_rate = compute_hit_rate(feature, forward_ret)

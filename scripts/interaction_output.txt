@@ -1,0 +1,116 @@
+================================================================================
+EXHAUSTION FEATURE INTERACTION & CORRELATION ANALYSIS
+================================================================================
+
+Loading GBP/USD H1 data...
+Loaded 65000 bars from 2015-04-02 12:00:00+00:00 to 2026-02-09 00:00:00+00:00
+
+Building exhaustion features...
+================================================================================
+2×2×2 FEATURE INTERACTION GRID
+================================================================================
+
+DP   | RNG  | CLS  | N      | Mean bps   | Win%     | p-val    | Interpretation
+----------------------------------------------------------------------------------------------------
+0.0  | 0.0  | 0.0  | 4080.0 |       0.10 |   50.4% |   0.4446 | Baseline (no features)
+0.0  | 0.0  | 1.0  | 9018.0 |      -0.08 |   49.0% |   0.3916 | Single feature only
+0.0  | 1.0  | 0.0  | 5121.0 |       0.33 |   50.3% |   0.0737 | Single feature only
+0.0  | 1.0  | 1.0  | 15531.0 |      -0.07 |   50.2% |   0.4951 | Partial combination
+1.0  | 0.0  | 0.0  | 3449.0 |       0.17 |   50.0% |   0.2221 | Single feature only
+1.0  | 0.0  | 1.0  | 7912.0 |      -0.07 |   49.9% |   0.4839 | Partial combination
+1.0  | 1.0  | 0.0  | 5234.0 |       0.05 |   49.7% |   0.8073 | Partial combination
+1.0  | 1.0  | 1.0  | 14654.0 |      -0.06 |   49.9% |   0.5932 | ⭐ FULL SIGNAL (hypothesis)
+================================================================================
+
+================================================================================
+INTERACTION ANALYSIS
+================================================================================
+Full signal (1,1,1): -0.06 bps
+DP alone (1,0,0):    0.17 bps
+  ⚠ WARNING: DP alone gives same edge → other features redundant!
+RNG alone (0,1,0):   0.33 bps
+  ⚠ WARNING: Range alone gives same edge → simplify hypothesis!
+CLS alone (0,0,1):   -0.08 bps
+  ⚠ WARNING: Close extreme alone gives same edge!
+Baseline (0,0,0):    0.10 bps
+
+✓ If full signal >> individual features: TRUE INTERACTION (features combine)
+✗ If one feature ≈ full signal: DOMINANT FEATURE (others add little value)
+
+================================================================================
+MATRIX 1: FEATURE-FEATURE CORRELATION (Input Redundancy)
+================================================================================
+
+Correlation Matrix:
+                    dir_pressure_2  ...  lower_wick_ratio
+dir_pressure_2               1.000  ...            -0.039
+range_expansion_10          -0.026  ...            -0.084
+close_extreme_35             0.000  ...            -0.267
+session_london              -0.024  ...            -0.010
+body_ratio                   0.006  ...            -0.614
+upper_wick_ratio             0.034  ...            -0.176
+lower_wick_ratio            -0.039  ...             1.000
+
+[7 rows x 7 columns]
+
+High Correlations (|r| > 0.70):
+  ✓ No high correlations found (features are independent)
+
+✓ Heatmap saved to: ../reports/figures/exhaustion_feature_correlation.png
+
+================================================================================
+MATRIX 2: FEATURE-RETURN CORRELATION (Predictive Power by Horizon)
+================================================================================
+
+Feature → Forward Return Correlations:
+                    fwd_ret_1h  fwd_ret_2h  fwd_ret_3h  fwd_ret_4h  fwd_ret_5h
+dir_pressure_2          -0.025      -0.020      -0.016      -0.010      -0.007
+range_expansion_10       0.002      -0.001      -0.001      -0.003      -0.006
+close_extreme_35        -0.003      -0.005      -0.004      -0.005      -0.007
+session_london          -0.008      -0.009      -0.004      -0.003      -0.005
+body_ratio               0.001      -0.003      -0.003      -0.005      -0.003
+upper_wick_ratio         0.021       0.021       0.017       0.018       0.016
+lower_wick_ratio        -0.022      -0.019      -0.015      -0.012      -0.012
+
+IC Decay Pattern (should decay with horizon for microstructure signal):
+  dir_pressure_2: -0.025 → -0.007 ✓ Decays (microstructure)
+  range_expansion_10: 0.002 → -0.006 ⚠ No decay (macro/trend?)
+  close_extreme_35: -0.003 → -0.007 ⚠ No decay (macro/trend?)
+  session_london: -0.008 → -0.005 ✓ Decays (microstructure)
+  body_ratio: 0.001 → -0.003 ⚠ No decay (macro/trend?)
+  upper_wick_ratio: 0.021 → 0.016 ✓ Decays (microstructure)
+  lower_wick_ratio: -0.022 → -0.012 ✓ Decays (microstructure)
+
+✓ Heatmap saved to: ../reports/figures/exhaustion_feature_return_correlation.png
+
+================================================================================
+VARIANCE INFLATION FACTOR (VIF) TEST
+================================================================================
+
+VIF Results:
+Feature                   | VIF        | Interpretation
+------------------------------------------------------------
+dir_pressure_2            |       1.00 | ✓ Acceptable
+range_expansion_10        |       3.52 | ✓ Acceptable
+close_extreme_35          |       4.19 | ✓ Acceptable
+session_london            |       1.94 | ✓ Acceptable
+body_ratio                |       3.96 | ✓ Acceptable
+upper_wick_ratio          |       1.85 | ✓ Acceptable
+lower_wick_ratio          |       1.86 | ✓ Acceptable
+
+Guidelines:
+  VIF < 5:  No multicollinearity
+  VIF 5-10: Moderate (document)
+  VIF > 10: High (drop or combine features)
+
+================================================================================
+SAVING RESULTS
+================================================================================
+✓ Interaction grid: reports/backtests/exhaustion_interaction_grid.csv
+✓ Feature correlation: reports/backtests/exhaustion_feature_correlation.csv
+✓ Feature-return correlation: reports/backtests/exhaustion_feature_return_correlation.csv
+✓ VIF test: reports/backtests/exhaustion_vif_test.csv
+
+================================================================================
+ANALYSIS COMPLETE
+================================================================================

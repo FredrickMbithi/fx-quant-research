@@ -1,0 +1,1 @@
+/home/ghost/fx-quant-research/venv/bin/python: can't open file '/home/ghost/fx-quant-research/test_exhaustion_univariate.py': [Errno 2] No such file or directory

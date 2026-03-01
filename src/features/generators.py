@@ -75,8 +75,19 @@ def close_position_in_range(high: pd.Series, low: pd.Series, close: pd.Series) -
     
     Hypothesis: Close near high indicates buying pressure.
     Category: MICROSTRUCTURE
+    
+    Returns value between 0 and 1 indicating where close is in the day's range.
+    Returns NaN when high == low (no range).
+    Clips to [0, 1] to handle data quality issues where close is outside [low, high].
     """
-    return (close - low) / (high - low + 1e-8)
+    range_size = high - low
+    # Avoid division by zero - return NaN when there's no range
+    close_pos = (close - low) / range_size
+    # Set to NaN where range is too small (prevents division issues)
+    close_pos = close_pos.where(range_size > 1e-6, np.nan)
+    # Clip to [0, 1] to handle data quality issues (close outside [low, high])
+    close_pos = close_pos.clip(0, 1)
+    return close_pos
 
 
 def rate_of_change(prices: pd.Series, period: int) -> pd.Series:

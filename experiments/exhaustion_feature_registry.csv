@@ -1,0 +1,10 @@
+feature_name,type,lookback,raw_inputs,hypothesis_role,lookahead_status
+dir_pressure_2,Momentum,2,"close,open",Trigger gate,Clean
+range_expansion_10,Volatility,10,"high,low",Exhaustion proxy,Clean (uses shift(1))
+close_extreme_35,Price Action,1,"close,high,low",Exhaustion proxy,Clean
+failure_to_continue,Confirmation,1,"close,open,high,low",Entry gate,Clean
+session_london,Calendar,0,timestamp UTC,Filter,Clean
+session_ny_overlap,Calendar,0,timestamp UTC,Filter,Clean
+body_ratio,Microstructure,1,"open,close,high,low",Auxiliary,Clean
+upper_wick_ratio,Microstructure,1,"close,high",Auxiliary,Clean
+lower_wick_ratio,Microstructure,1,"close,low",Auxiliary,Clean
